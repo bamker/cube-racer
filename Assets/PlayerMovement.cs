@@ -2,151 +2,27 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public Rigidbody rigidBody;
 
-    public Rigidbody playerRigidBody;
-
-    public bool gravityStatus;
-    public float zForce;
-    public float xForce;
-    public bool isInput;
-    public string inputDirection;
+    public float forwardForce = 2000f;
+    public float sidewaysForce = 500f;
 
     void Start()    // called before the first frame update
     {
-        applyGravity();
-        Debug.Log("Gravity Status: " + gravityStatus);
+        rigidBody.useGravity = true;
     }
 
-    void Update()   // called once per frame
-    {
-        updateInput();
-    }
-    
     void FixedUpdate()  // named "Fixed"Update due to physics manipulation (Time.deltaTime?)
     {
-        // applies force along z-axis to playerRigidBody
-        applyZForce();
+        rigidBody.AddForce(0, 0, forwardForce * Time.deltaTime);
 
-        // applies force along x-axis to playerRigidBody
-        movePlayer();
-    }
-
-    /* movement:
-     - check for updated input in Update()
-     - store input
-     - add force to stored input in FixedUpdate() */
-    void movePlayer()
-    {
-        if (getIsInput() && getInputDirection() == "left")
+        if (Input.GetKey("d"))
         {
-            setXForce(-xForce);
-            applyXForce();
+            rigidBody.AddForce(sidewaysForce * Time.deltaTime, 0, 0);
         }
-        if (getIsInput() && getInputDirection() == "right")
+        if (Input.GetKey("a"))
         {
-            setXForce(xForce);
-            applyXForce();
+            rigidBody.AddForce(-sidewaysForce * Time.deltaTime, 0, 0);
         }
     }
-
-    void updateInput()
-    {
-        if (Input.GetKeyDown(KeyCode.A))
-        {
-            setIsInput(true);
-            setInputDirection("left");
-        }
-        else if (Input.GetKeyDown(KeyCode.D))
-        {
-            setIsInput(true);
-            setInputDirection("right");
-        }
-        else
-        {
-            setIsInput(false);
-            setInputDirection(null);
-        }
-    }
-
-    string getInputDirection()
-    {
-        return inputDirection;
-    }
-
-    void setInputDirection(string input)
-    {
-        try
-        {
-            inputDirection = input;
-        }
-        catch
-        {
-            Debug.Log("error setting input direction");
-        }
-    }
-
-    bool getIsInput()
-    {
-        return isInput;
-    }
-
-    void setIsInput(bool status)
-    {
-        isInput = status;
-    }
-
-    // xForce
-    void applyXForce()
-    {
-        playerRigidBody.AddForce(deltaTimeMultiplier(getXForce()), 0, 0);
-    }
-
-    float getXForce()
-    {
-        return xForce;
-    }
-
-    void setXForce(float force)
-    {
-        xForce = force;
-    }
-
-    // zForce
-    void applyZForce()
-    {
-        playerRigidBody.AddForce(0, 0, deltaTimeMultiplier(getZForce()));
-    }
-
-    float getZForce()
-    {
-        return zForce;
-    }
-
-    void setZForce(float force)
-    {
-        zForce = force;
-    }
-
-    // gravity
-    void applyGravity()
-    {
-        playerRigidBody.useGravity = getGravityStatus();
-    }
-
-    bool getGravityStatus()
-    {
-        return gravityStatus;
-    }
-
-    void setGravityStatus(bool status)
-    {
-        gravityStatus = status;
-    }
-
-    float deltaTimeMultiplier(float input)  // multiplies input by Time.deltaTime to adjust framerate across cpu performance variation
-    {
-        float deltaInput = input * Time.deltaTime;
-        return deltaInput;
-    }
-
 }
