@@ -5,10 +5,8 @@ public class FollowPlayer : MonoBehaviour
     public Transform player;
     public Vector3 offset;
 
-    // Update is called once per frame
-    void Update()
+    void Update()   // called once per frame
     {
-        Debug.Log(player.position);
         transform.position = player.position + offset;
     }
 }
