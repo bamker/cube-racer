@@ -250,9 +250,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b430b9c8bbabb04b8ae2e1eeff04dd8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rigidBody: {fileID: 582734577}
-  gravityStatus: 1
-  forwardForce: 2000
+  playerRigidBody: {fileID: 582734577}
+  gravityStatus: 0
+  zForce: 250
+  xForce: 500
+  isMovementKeyDown: 0
+  inputDirection: 
 --- !u!1 &620815508
 GameObject:
   m_ObjectHideFlags: 0
