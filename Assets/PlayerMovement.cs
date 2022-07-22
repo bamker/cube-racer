@@ -2,32 +2,27 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public Rigidbody rigidBody;
 
-    public Rigidbody rb;
+    public float forwardForce = 2000f;
+    public float sidewaysForce = 500f;
 
-    // Start is called before the first frame update
-    void Start()
+    void Start()    // called before the first frame update
     {
-
+        rigidBody.useGravity = true;
     }
 
-    // Update is called once per frame
-    void Update()
+    void FixedUpdate()  // named "Fixed"Update due to physics manipulation (Time.deltaTime?)
     {
-        
-    }
+        rigidBody.AddForce(0, 0, forwardForce * Time.deltaTime);
 
-    // FixedUpdate for physics
-    private void FixedUpdate()
-    {
-        rb.AddForce(0, 0, 2000 * Time.deltaTime);
+        if (Input.GetKey("d"))
+        {
+            rigidBody.AddForce(sidewaysForce * Time.deltaTime, 0, 0);
+        }
+        if (Input.GetKey("a"))
+        {
+            rigidBody.AddForce(-sidewaysForce * Time.deltaTime, 0, 0);
+        }
     }
-
-    void setGravityStatus(bool status)
-    {
-        rb.useGravity = status;
-        string gravityStatus = ("Gravity Status: " + status);
-        Debug.Log(gravityStatus);
-    }
-
 }
